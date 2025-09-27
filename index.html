@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Video Alchemist 🎨</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple-dark: #6a0dad;
+            --purple-light: #9c27b0;
+            --purple-gradient: linear-gradient(135deg, var(--purple-dark), var(--purple-light));
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 8px;
+            height: 100%;
+            background: var(--purple-gradient);
+            z-index: -1;
+        }
+        .ascii-preview {
+            font-family: monospace;
+            white-space: pre;
+            background: black;
+            padding: 10px;
+            overflow: auto;
+            max-height: 400px;
+        }
+        .dropzone {
+            border: 3px dashed #666;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dropzone:hover {
+            border-color: #aaa;
+            background: #222;
+        }
+        .controls-section {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .fullscreen-preview {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+        }
+        .btn-convert {
+            background: var(--purple-gradient);
+            color: white;
+            font-size: 1.5rem;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn-convert:hover {
+            transform: scale(1.05);
+        }
+        #notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <div class="rounded-circle bg-purple-gradient d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px;">
+                    <i class="fas fa-magic text-white"></i>
+                </div>
+                <span class="fw-bold">ASCII Alchemist</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#github">GitHub</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <h1 class="display-4 fw-bold mb-4">Transform Media into <span class="text-purple">ASCII Art</span></h1>
+                    <p class="lead mb-4">Convert videos and images into stunning ASCII masterpieces with our powerful alchemy tools.</p>
+                    <div class="d-flex">
+                        <a href="#converter" class="btn btn-lg btn-purple-gradient me-3">Try It Now</a>
+                        <a href="#github" class="btn btn-lg btn-outline-light">
+                            <i class="fab fa-github me-2"></i>GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Powerful Features</h2>
+                <p class="text-muted">Everything you need to create stunning ASCII art</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card bg-dark-2 h-100 border-0 rounded-4">
+                        <div class="card-body p-4">
+                            <div class="icon-box bg-purple-gradient mb-3">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h4 class="fw-bold">Video Conversion</h4>
+                            <p class="text-muted">Convert any video into ASCII art frame by frame with customizable settings.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark-2 h-100 border-0 rounded-4">
+                        <div class="card-body p-4">
+                            <div class="icon-box bg-purple-gradient mb-3">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <h4 class="fw-bold">Image Processing</h4>
+                            <p class="text-muted">Transform images into beautiful ASCII representations with various styles.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark-2 h-100 border-0 rounded-4">
+                        <div class="card-body p-4">
+                            <div class="icon-box bg-purple-gradient mb-3">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <h4 class="fw-bold">GitHub Integration</h4>
+                            <p class="text-muted">Save and manage your creations directly to GitHub repositories.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Converter Section -->
+    <section id="converter" class="py-5 bg-dark-2">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">ASCII Converter</h2>
+                <p class="text-muted">Try our powerful conversion tool</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="controls-section">
+                                    <h3><i class="fas fa-upload me-2"></i>Upload Media</h3>
+                                    <div id="dropzone" class="dropzone my-3">
+                                        <p>Drag & drop video/image here or click to browse</p>
+                                        <input type="file" id="fileInput" name="file" accept="video/*,image/*" class="d-none">
+                                    </div>
+                                    <div id="uploadPreview" style="display: none;">
+                                        <video id="originalVideo" controls class="w-100 mb-3" style="display: none;"></video>
+                                        <img id="originalImage" class="img-fluid mb-3" style="display: none;">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">ASCII Density</label>
+                                        <input type="range" class="form-range" id="densityRange" name="density" min="1" max="10" value="5">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Color Mode</label>
+                                        <select class="form-select" id="colorMode" name="colorMode">
+                                            <option value="monochrome">Monochrome</option>
+                                            <option value="grayscale">Grayscale</option>
+                                            <option value="color">Color</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Font Size</label>
+                                        <input type="range" class="form-range" id="fontSize" name="fontSize" min="4" max="20" value="8">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Aspect Ratio Adjustment (height scale)</label>
+                                        <input type="range" class="form-range" id="aspectRatio" name="aspectRatio" min="0.5" max="2" step="0.1" value="0.5">
+                                    </div>
+                                    
+                                    <button type="submit" id="convertBtn" class="btn btn-convert btn-lg w-100" disabled>
+                                        <i class="fas fa-magic me-1"></i>Convert to ASCII
+                                    </button>
+                                    <button id="fullscreenBtn" class="btn btn-outline-secondary me-2 mt-2" disabled>
+                                        <i class="fas fa-expand me-1"></i>Fullscreen
+                                    </button>
+                                    <button id="downloadBtn" class="btn btn-outline-success mt-2" disabled>
+                                        <i class="fas fa-download me-1"></i>Download
+                                    </button>
+                                </div>
+                                
+                                <div class="controls-section mt-4">
+                                    <h3><i class="fas fa-music me-2"></i>Audio Options</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">Original Audio</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="keepAudio" name="keepAudio" checked>
+                                            <label class="form-check-label" for="keepAudio">Keep original audio</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Add Custom Audio</label>
+                                        <input type="file" id="audioInput" name="audio" accept="audio/*" class="form-control">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Volume</label>
+                                        <input type="range" class="form-range" id="volumeRange" name="volume" min="0" max="1" step="0.1" value="0.8">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Trim Audio</label>
+                                        <div class="d-flex align-items-center">
+                                            <input type="number" class="form-control me-2" id="startTime" name="startTime" placeholder="Start (s)" min="0">
+                                            <input type="number" class="form-control" id="endTime" name="endTime" placeholder="End (s)" min="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h3><i class="fas fa-eye me-2"></i>ASCII Preview</h3>
+                                <div id="asciiPreviewContainer">
+                                    <div id="asciiPreview" class="ascii-preview">
+                                        Upload a file to see the magic!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fullscreen Modal -->
+    <div id="fullscreenModal" class="fullscreen-preview" style="display: none;">
+        <button id="closeFullscreen" class="btn btn-danger position-absolute top-0 end-0 m-3">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="fullscreenAscii" class="ascii-preview"></div>
+    </div>
+
+    <!-- GitHub Integration Modal -->
+    <div class="modal fade" id="githubModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark-2 border-purple">
+                <div class="modal-header border-purple">
+                    <h5 class="modal-title">Connect GitHub</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">GitHub Username</label>
+                        <input type="text" class="form-control bg-dark-3 border-purple" id="githubUsername">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Personal Access Token</label>
+                        <input type="password" class="form-control bg-dark-3 border-purple" id="githubToken">
+                        <small class="text-muted">Create token with repo permissions</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Default Repository</label>
+                        <select class="form-select bg-dark-3 border-purple" id="githubRepo">
+                            <option value="">Select repository</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-purple">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-purple-gradient" id="connectGithub">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="alert alert-info">
+        <span id="notificationMessage"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@octokit/core"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const githubModal = new bootstrap.Modal(document.getElementById('githubModal'));
+            const connectGithubBtn = document.getElementById('connectGithub');
+            const dropzone = document.getElementById('dropzone');
+            const fileInput = document.getElementById('fileInput');
+            const uploadPreview = document.getElementById('uploadPreview');
+            const originalVideo = document.getElementById('originalVideo');
+            const originalImage = document.getElementById('originalImage');
+            const asciiPreview = document.getElementById('asciiPreview');
+            const fullscreenModal = document.getElementById('fullscreenModal');
+            const fullscreenAscii = document.getElementById('fullscreenAscii');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const closeFullscreen = document.getElementById('closeFullscreen');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const convertBtn = document.getElementById('convertBtn');
+            const uploadForm = document.getElementById('uploadForm');
+            const fontSize = document.getElementById('fontSize');
+            const colorMode = document.getElementById('colorMode');
+            const densityRange = document.getElementById('densityRange');
+            const aspectRatio = document.getElementById('aspectRatio');
+            const notification = document.getElementById('notification');
+            const notificationMessage = document.getElementById('notificationMessage');
+            
+            let isVideo = false;
+            let previewInterval = null;
+            let currentFile = null;
+            let downloadUrl = null;
+            
+            // GitHub integration
+            connectGithubBtn.addEventListener('click', async function() {
+                const username = document.getElementById('githubUsername').value;
+                const token = document.getElementById('githubToken').value;
+                if (username && token) {
+                    try {
+                        const octokit = new Octokit.Octokit({ auth: token });
+                        const { data } = await octokit.request('GET /user/repos');
+                        const repoSelect = document.getElementById('githubRepo');
+                        repoSelect.innerHTML = '<option value="">Select repository</option>';
+                        data.forEach(repo => {
+                            const option = document.createElement('option');
+                            option.value = repo.full_name;
+                            option.textContent = repo.name;
+                            repoSelect.appendChild(option);
+                        });
+                        localStorage.setItem('githubCredentials', JSON.stringify({ username, token }));
+                        showNotification('GitHub connected successfully!', 'success');
+                        githubModal.hide();
+                    } catch (error) {
+                        showNotification('Error connecting to GitHub: ' + error.message, 'danger');
+                    }
+                } else {
+                    showNotification('Please enter both username and token', 'danger');
+                }
+            });
+            
+            // Upload handling
+            dropzone.addEventListener('click', () => fileInput.click());
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.style.borderColor = '#aaa';
+                dropzone.style.background = '#222';
+            });
+            dropzone.addEventListener('dragleave', () => {
+                dropzone.style.borderColor = '#666';
+                dropzone.style.background = 'transparent';
+            });
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.style.borderColor = '#666';
+                dropzone.style.background = 'transparent';
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleFileUpload(fileInput.files[0]);
+                }
+            });
+            
+            function handleFileUpload(file) {
+                currentFile = file;
+                const fileType = file.type.split('/')[0];
+                isVideo = fileType === 'video';
+                dropzone.style.display = 'none';
+                uploadPreview.style.display = 'block';
+                stopVideoPreview(); // Clear any existing preview
+                downloadBtn.disabled = true; // Reset download button
+                downloadUrl = null; // Clear previous download
+                asciiPreview.innerHTML = 'Processing preview...';
+                
+                if (isVideo) {
+                    originalVideo.style.display = 'block';
+                    originalImage.style.display = 'none';
+                    originalVideo.src = URL.createObjectURL(file);
+                    originalVideo.addEventListener('loadedmetadata', () => {
+                        originalVideo.currentTime = 0; // Reset to start
+                        updateVideoAsciiPreview(); // Show initial frame
+                    });
+                    originalVideo.addEventListener('play', startVideoPreview);
+                    originalVideo.addEventListener('pause', stopVideoPreview);
+                    originalVideo.addEventListener('seeked', updateVideoAsciiPreview);
+                } else {
+                    originalImage.style.display = 'block';
+                    originalVideo.style.display = 'none';
+                    originalImage.src = URL.createObjectURL(file);
+                    generateImageAsciiPreview(file);
+                }
+                
+                convertBtn.disabled = false;
+                fullscreenBtn.disabled = true;
+            }
+            
+            function generateAsciiFromImage(img, width, height, aspectScale, mode) {
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = Math.floor(height * aspectScale);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, canvas.height);
+                const data = ctx.getImageData(0, 0, width, canvas.height).data;
+                const ramp = ' .:-=+*#%@';
+                let ascii = '';
+                const colorSpan = mode === 'color';
+                for (let y = 0; y < canvas.height; y++) {
+                    for (let x = 0; x < width; x++) {
+                        const i = (y * width + x) * 4;
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        const avg = (r + g + b) / 3 / 255;
+                        const index = Math.floor((1 - avg) * (ramp.length - 1));
+                        const char = ramp[index];
+                        if (colorSpan) {
+                            ascii += `<span style="color: rgb(${r},${g},${b})">${char}</span>`;
+                        } else {
+                            ascii += char;
+                        }
+                    }
+                    ascii += '\n';
+                }
+                return ascii;
+            }
+            
+            function generateImageAsciiPreview(file) {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                img.onload = () => {
+                    const width = densityRange.value * 20;
+                    const height = Math.floor(img.height / img.width * width);
+                    const aspectScale = parseFloat(aspectRatio.value);
+                    const mode = colorMode.value;
+                    const ascii = generateAsciiFromImage(img, width, height, aspectScale, mode);
+                    asciiPreview.innerHTML = ascii;
+                    asciiPreview.style.fontSize = `${fontSize.value}px`;
+                    fullscreenBtn.disabled = false;
+                };
+            }
+            
+            function updateVideoAsciiPreview() {
+                if (!isVideo || !originalVideo.src) return;
+                const width = densityRange.value * 20;
+                const height = Math.floor(originalVideo.videoHeight / originalVideo.videoWidth * width);
+                const aspectScale = parseFloat(aspectRatio.value);
+                const mode = colorMode.value;
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = Math.floor(height * aspectScale);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(originalVideo, 0, 0, width, canvas.height);
+                const ascii = generateAsciiFromImage(originalVideo, width, height, aspectScale, mode);
+                asciiPreview.innerHTML = ascii;
+                asciiPreview.style.fontSize = `${fontSize.value}px`;
+                fullscreenBtn.disabled = false;
+            }
+            
+            function startVideoPreview() {
+                stopVideoPreview();
+                const width = densityRange.value * 20;
+                const height = Math.floor(originalVideo.videoHeight / originalVideo.videoWidth * width);
+                const aspectScale = parseFloat(aspectRatio.value);
+                const mode = colorMode.value;
+                previewInterval = setInterval(() => {
+                    updateVideoAsciiPreview();
+                }, 1000 / 30); // 30 fps
+            }
+            
+            function stopVideoPreview() {
+                if (previewInterval) {
+                    clearInterval(previewInterval);
+                    previewInterval = null;
+                }
+            }
+            
+            uploadForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                if (convertBtn.disabled) return; // Prevent multiple submissions
+                convertBtn.disabled = true;
+                convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Converting...';
+                showNotification('Conversion started...');
+                
+                const formData = new FormData(uploadForm);
+                formData.append('aspectRatio', aspectRatio.value);
+                try {
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Conversion failed');
+                    }
+                    const blob = await response.blob();
+                    downloadUrl = URL.createObjectURL(blob);
+                    downloadBtn.disabled = false;
+                    showNotification('Conversion complete! Ready to download.', 'success');
+                } catch (error) {
+                    showNotification('Error: ' + error.message, 'danger');
+                } finally {
+                    convertBtn.disabled = false;
+                    convertBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Convert to ASCII';
+                }
+            });
+            
+            downloadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (downloadUrl) {
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = isVideo ? 'ascii_video.mp4' : 'ascii_image.png';
+                    a.click();
+                    showNotification('Download started!', 'success');
+                }
+            });
+            
+            fullscreenBtn.addEventListener('click', () => {
+                fullscreenAscii.innerHTML = asciiPreview.innerHTML;
+                fullscreenModal.style.display = 'flex';
+                fullscreenAscii.style.fontSize = `${fontSize.value}px`;
+            });
+            
+            closeFullscreen.addEventListener('click', () => {
+                fullscreenModal.style.display = 'none';
+            });
+            
+            function showNotification(message, type = 'info') {
+                notification.classList.remove('alert-info', 'alert-success', 'alert-danger');
+                notification.classList.add(`alert-${type}`);
+                notificationMessage.textContent = message;
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Update preview on parameter change
+            [densityRange, colorMode, fontSize, aspectRatio].forEach(element => {
+                element.addEventListener('input', () => {
+                    if (currentFile) {
+                        if (isVideo) {
+                            updateVideoAsciiPreview();
+                        } else {
+                            generateImageAsciiPreview(currentFile);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
