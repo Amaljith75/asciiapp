@@ -9,77 +9,158 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --purple-dark: #6a0dad;
-            --purple-light: #9c27b0;
+            --purple-dark: #5a0a9c;
+            --purple-light: #8e24aa;
             --purple-gradient: linear-gradient(135deg, var(--purple-dark), var(--purple-light));
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
         }
         body {
-            background-color: #121212;
-            color: #e0e0e0;
+            background: linear-gradient(180deg, #121212, #1e1e1e);
+            color: #ffffff;
             font-family: 'Poppins', sans-serif;
-            position: relative;
             overflow-x: hidden;
+            position: relative;
         }
         body::before {
             content: '';
             position: fixed;
             left: 0;
             top: 0;
-            width: 8px;
-            height: 100%;
-            background: var(--purple-gradient);
-            z-index: -1;
-        }
-        .ascii-preview {
-            font-family: monospace;
-            white-space: pre;
-            background: black;
-            padding: 10px;
-            overflow: auto;
-            max-height: 400px;
-        }
-        .dropzone {
-            border: 3px dashed #666;
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .dropzone:hover {
-            border-color: #aaa;
-            background: #222;
-        }
-        .controls-section {
-            background: #1e1e1e;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .fullscreen-preview {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            background: black;
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: auto;
+            background: radial-gradient(circle at top left, rgba(138, 43, 226, 0.2), transparent 50%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        h1, h2, h3, h4, h5, h6, p, label, .nav-link, .form-label, .form-check-label, .btn {
+            color: #ffffff !important;
+        }
+        .ascii-preview, .fullscreen-ascii {
+            color: #ffffff !important;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            background: #000000;
+            padding: 1rem;
+            border-radius: 8px;
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            line-height: 1;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .ascii-preview.monochrome, .ascii-preview.grayscale,
+        .fullscreen-ascii.monochrome, .fullscreen-ascii.grayscale {
+            color: #ffffff !important;
+        }
+        .crop-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #ffffff;
+            font-size: 1.5rem;
+        }
+        .crop-box {
+            position: absolute;
+            border: 2px dashed #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: move;
+        }
+        .crop-box .resize-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border-radius: 50%;
+        }
+        .navbar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .hero {
+            background: transparent;
+            text-align: center;
+            padding: 4rem 0;
+        }
+        .hero h1 {
+            font-weight: 700;
+            background: var(--purple-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+        }
+        .controls-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .controls-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        .ascii-preview-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .dropzone {
+            border: 2px dashed var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+        }
+        .dropzone:hover {
+            border-color: var(--purple-light);
+            background: rgba(142, 36, 170, 0.1);
         }
         .btn-convert {
             background: var(--purple-gradient);
-            color: white;
-            font-size: 1.5rem;
-            padding: 15px 30px;
-            border-radius: 8px;
+            color: #ffffff !important;
+            font-size: 1.25rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
             font-weight: 600;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .btn-convert:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(142, 36, 170, 0.4);
+        }
+        .btn-outline-secondary, .btn-outline-success, .btn-outline-primary {
+            border-color: var(--glass-border);
+            color: #ffffff !important;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-secondary:hover, .btn-outline-primary:hover {
+            background: var(--purple-gradient);
+            color: #ffffff !important;
+            border-color: transparent;
+        }
+        .btn-outline-success:hover {
+            background: var(--purple-gradient);
+            color: #ffffff !important;
+            border-color: transparent;
+            animation: pulse 0.5s ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         #notification {
             position: fixed;
@@ -87,6 +168,119 @@
             right: 20px;
             z-index: 1050;
             display: none;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 1rem;
+            color: #ffffff !important;
+        }
+        .fullscreen-preview {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #121212;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .fullscreen-side-by-side {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1rem;
+        }
+        .fullscreen-original, .fullscreen-ascii {
+            flex: 1;
+            max-width: 48%;
+            overflow: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .fullscreen-original video, .fullscreen-original img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        #uploadPreview {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+        }
+        #originalImage {
+            max-width: 100%;
+            height: auto;
+        }
+        #originalVideo {
+            max-width: 100%;
+            height: auto;
+        }
+        .text-muted {
+            color: #d1d1d1 !important;
+            font-weight: 500;
+        }
+        .accordion-button {
+            background: var(--glass-bg);
+            color: #ffffff !important;
+            border: none;
+        }
+        .accordion-button:not(.collapsed) {
+            background: var(--purple-gradient);
+            color: #ffffff !important;
+        }
+        .accordion-item {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+        }
+        .form-range {
+            transition: all 0.3s ease;
+        }
+        .form-range::-webkit-slider-thumb {
+            transition: all 0.3s ease;
+            background: var(--purple-gradient);
+            border: 2px solid #ffffff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .form-range::-moz-range-thumb {
+            transition: all 0.3s ease;
+            background: var(--purple-gradient);
+            border: 2px solid #ffffff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        .form-range::-webkit-slider-runnable-track {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            height: 8px;
+            border-radius: 4px;
+        }
+        .form-range::-moz-range-track {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            height: 8px;
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+            .fullscreen-side-by-side {
+                flex-direction: column;
+                align-items: center;
+            }
+            .fullscreen-original, .fullscreen-ascii {
+                max-width: 90%;
+                margin-bottom: 1rem;
+            }
         }
     </style>
 </head>
@@ -120,19 +314,15 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero py-5">
+    <section class="hero">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <h1 class="display-4 fw-bold mb-4">Transform Media into <span class="text-purple">ASCII Art</span></h1>
-                    <p class="lead mb-4">Convert videos and images into stunning ASCII masterpieces with our powerful alchemy tools.</p>
-                    <div class="d-flex">
-                        <a href="#converter" class="btn btn-lg btn-purple-gradient me-3">Try It Now</a>
-                        <a href="#github" class="btn btn-lg btn-outline-light">
-                            <i class="fab fa-github me-2"></i>GitHub
-                        </a>
-                    </div>
-                </div>
+            <h1 class="display-3 fw-bold mb-4">Transform Media into <span>ASCII Art</span></h1>
+            <p class="lead mb-4">Turn videos and images into ASCII art.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#converter" class="btn btn-lg btn-convert">Start Creating</a>
+                <a href="#github" class="btn btn-lg btn-outline-light">
+                    <i class="fab fa-github me-2"></i>GitHub
+                </a>
             </div>
         </div>
     </section>
@@ -146,36 +336,30 @@
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="card bg-dark-2 h-100 border-0 rounded-4">
-                        <div class="card-body p-4">
-                            <div class="icon-box bg-purple-gradient mb-3">
-                                <i class="fas fa-video"></i>
-                            </div>
-                            <h4 class="fw-bold">Video Conversion</h4>
-                            <p class="text-muted">Convert any video into ASCII art frame by frame with customizable settings.</p>
+                    <div class="controls-section h-100">
+                        <div class="icon-box bg-purple-gradient mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-video"></i>
                         </div>
+                        <h4 class="fw-bold">Video Conversion</h4>
+                        <p class="text-muted">Convert any video into ASCII art frame by frame with customizable settings.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card bg-dark-2 h-100 border-0 rounded-4">
-                        <div class="card-body p-4">
-                            <div class="icon-box bg-purple-gradient mb-3">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <h4 class="fw-bold">Image Processing</h4>
-                            <p class="text-muted">Transform images into beautiful ASCII representations with various styles.</p>
+                    <div class="controls-section h-100">
+                        <div class="icon-box bg-purple-gradient mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-image"></i>
                         </div>
+                        <h4 class="fw-bold">Image Processing</h4>
+                        <p class="text-muted">Transform images into beautiful ASCII representations with various styles.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card bg-dark-2 h-100 border-0 rounded-4">
-                        <div class="card-body p-4">
-                            <div class="icon-box bg-purple-gradient mb-3">
-                                <i class="fab fa-github"></i>
-                            </div>
-                            <h4 class="fw-bold">GitHub Integration</h4>
-                            <p class="text-muted">Save and manage your creations directly to GitHub repositories.</p>
+                    <div class="controls-section h-100">
+                        <div class="icon-box bg-purple-gradient mb-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fab fa-github"></i>
                         </div>
+                        <h4 class="fw-bold">GitHub Integration</h4>
+                        <p class="text-muted">Save and manage your creations directly to GitHub repositories.</p>
                     </div>
                 </div>
             </div>
@@ -183,103 +367,176 @@
     </section>
 
     <!-- Converter Section -->
-    <section id="converter" class="py-5 bg-dark-2">
+    <section id="converter" class="py-5">
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="fw-bold">ASCII Converter</h2>
-                <p class="text-muted">Try our powerful conversion tool</p>
+                <p class="text-muted">Unleash your creativity with our powerful conversion tool</p>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
+            <div class="row g-4">
+                <div class="col-lg-6">
                     <form id="uploadForm" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="controls-section">
-                                    <h3><i class="fas fa-upload me-2"></i>Upload Media</h3>
-                                    <div id="dropzone" class="dropzone my-3">
-                                        <p>Drag & drop video/image here or click to browse</p>
-                                        <input type="file" id="fileInput" name="file" accept="video/*,image/*" class="d-none">
-                                    </div>
-                                    <div id="uploadPreview" style="display: none;">
-                                        <video id="originalVideo" controls class="w-100 mb-3" style="display: none;"></video>
-                                        <img id="originalImage" class="img-fluid mb-3" style="display: none;">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">ASCII Density</label>
-                                        <input type="range" class="form-range" id="densityRange" name="density" min="1" max="10" value="5">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Color Mode</label>
-                                        <select class="form-select" id="colorMode" name="colorMode">
-                                            <option value="monochrome">Monochrome</option>
-                                            <option value="grayscale">Grayscale</option>
-                                            <option value="color">Color</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Font Size</label>
-                                        <input type="range" class="form-range" id="fontSize" name="fontSize" min="4" max="20" value="8">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Aspect Ratio Adjustment (height scale)</label>
-                                        <input type="range" class="form-range" id="aspectRatio" name="aspectRatio" min="0.5" max="2" step="0.1" value="0.5">
-                                    </div>
-                                    
-                                    <button type="submit" id="convertBtn" class="btn btn-convert btn-lg w-100" disabled>
-                                        <i class="fas fa-magic me-1"></i>Convert to ASCII
-                                    </button>
-                                    <button id="fullscreenBtn" class="btn btn-outline-secondary me-2 mt-2" disabled>
-                                        <i class="fas fa-expand me-1"></i>Fullscreen
-                                    </button>
-                                    <button id="downloadBtn" class="btn btn-outline-success mt-2" disabled>
-                                        <i class="fas fa-download me-1"></i>Download
-                                    </button>
+                        <div class="controls-section">
+                            <h3><i class="fas fa-upload me-2"></i>Upload Media</h3>
+                            <div id="dropzone" class="dropzone my-3">
+                                <p>Drag & drop video/image here or click to browse</p>
+                                <input type="file" id="fileInput" name="file" accept="video/*,image/*" class="d-none">
+                            </div>
+                            <div id="uploadPreview" style="position: relative; display: none;">
+                                <video id="originalVideo" controls class="w-100 mb-3 rounded" style="display: none;"></video>
+                                <img id="originalImage" class="img-fluid mb-3 rounded" style="display: none;">
+                                <div id="cropBox" class="crop-box" style="display: none;">
+                                    <div class="resize-handle" style="top: -5px; left: -5px;"></div>
+                                    <div class="resize-handle" style="top: -5px; right: -5px;"></div>
+                                    <div class="resize-handle" style="bottom: -5px; left: -5px;"></div>
+                                    <div class="resize-handle" style="bottom: -5px; right: -5px;"></div>
                                 </div>
-                                
-                                <div class="controls-section mt-4">
-                                    <h3><i class="fas fa-music me-2"></i>Audio Options</h3>
-                                    <div class="mb-3">
-                                        <label class="form-label">Original Audio</label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="keepAudio" name="keepAudio" checked>
-                                            <label class="form-check-label" for="keepAudio">Keep original audio</label>
+                            </div>
+                        </div>
+
+                        <div class="accordion" id="controlsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#asciiControls">
+                                        ASCII Settings
+                                    </button>
+                                </h2>
+                                <div id="asciiControls" class="accordion-collapse collapse show" data-bs-parent="#controlsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">ASCII Density</label>
+                                            <input type="range" class="form-range" id="densityRange" name="density" min="1" max="10" value="5" step="0.1">
                                         </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Add Custom Audio</label>
-                                        <input type="file" id="audioInput" name="audio" accept="audio/*" class="form-control">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Volume</label>
-                                        <input type="range" class="form-range" id="volumeRange" name="volume" min="0" max="1" step="0.1" value="0.8">
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">Trim Audio</label>
-                                        <div class="d-flex align-items-center">
-                                            <input type="number" class="form-control me-2" id="startTime" name="startTime" placeholder="Start (s)" min="0">
-                                            <input type="number" class="form-control" id="endTime" name="endTime" placeholder="End (s)" min="0">
+                                        <div class="mb-3">
+                                            <label class="form-label">Color Mode</label>
+                                            <select class="form-select" id="colorMode" name="colorMode">
+                                                <option value="monochrome">Monochrome</option>
+                                                <option value="grayscale">Grayscale</option>
+                                                <option value="color">Color</option>
+                                                <option value="matrix">Matrix (Green)</option>
+                                                <option value="matrix_red">Matrix (Red)</option>
+                                                <option value="matrix_violet">Matrix (Violet)</option>
+                                                <option value="matrix_blue">Matrix (Blue)</option>
+                                                <option value="matrix_cyan">Matrix (Cyan)</option>
+                                                <option value="matrix_heliotrope">Matrix (Heliotrope)</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Font Size</label>
+                                            <input type="range" class="form-range" id="fontSize" name="fontSize" min="4" max="20" value="8" step="0.1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Aspect Ratio (Height Scale)</label>
+                                            <input type="range" class="form-range" id="aspectRatio" name="aspectRatio" min="0.5" max="2" step="0.01" value="0.5">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Custom ASCII Symbols (light to dark)</label>
+                                            <input type="text" class="form-control" id="customSymbols" name="customSymbols" placeholder="e.g., .';-+[*%" value=" .';-+[*%">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Resolution</label>
+                                            <select class="form-select" id="resolution" name="resolution">
+                                                <option value="1920p">1920p</option>
+                                                <option value="1366p">1366p</option>
+                                                <option value="1080p" selected>1080p</option>
+                                                <option value="720p">720p</option>
+                                                <option value="360p">360p</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-md-6">
-                                <h3><i class="fas fa-eye me-2"></i>ASCII Preview</h3>
-                                <div id="asciiPreviewContainer">
-                                    <div id="asciiPreview" class="ascii-preview">
-                                        Upload a file to see the magic!
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#imageControls">
+                                        Image Adjustments
+                                    </button>
+                                </h2>
+                                <div id="imageControls" class="accordion-collapse collapse" data-bs-parent="#controlsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Brightness</label>
+                                            <input type="range" class="form-range" id="brightness" name="brightness" min="-1" max="1" step="0.01" value="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Contrast</label>
+                                            <input type="range" class="form-range" id="contrast" name="contrast" min="0.5" max="2" step="0.01" value="1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Ambience</label>
+                                            <input type="range" class="form-range" id="ambience" name="ambience" min="0" max="1" step="0.01" value="0">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Clarity (Sharpness)</label>
+                                            <input type="range" class="form-range" id="clarity" name="clarity" min="0" max="1" step="0.01" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#audioControls">
+                                        Audio Options
+                                    </button>
+                                </h2>
+                                <div id="audioControls" class="accordion-collapse collapse" data-bs-parent="#controlsAccordion">
+                                    <div class="accordion-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Original Audio</label>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="keepAudio" name="keepAudio" checked>
+                                                <label class="form-label">Keep original audio</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Add Custom Audio</label>
+                                            <input type="file" id="audioInput" name="audio" accept="audio/*" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Volume</label>
+                                            <input type="range" class="form-range" id="volumeRange" name="volume" min="0" max="1" step="0.01" value="0.8">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Trim Audio</label>
+                                            <audio id="audioPreview" controls style="width: 100%;"></audio>
+                                            <div class="mt-2">
+                                                <label class="form-label">Trim Range</label>
+                                                <input type="range" class="form-range" id="trimRange" min="0" max="100" step="0.1" value="0" style="display: none;">
+                                                <div class="d-flex justify-content-between">
+                                                    <span id="trimStart">0:00</span>
+                                                    <span id="trimEnd">0:00</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="d-flex gap-2 mt-3">
+                            <button type="submit" id="convertBtn" class="btn btn-convert w-100" disabled>
+                                <i class="fas fa-magic me-1"></i>Convert to ASCII
+                            </button>
+                            <button id="fullscreenBtn" class="btn btn-outline-secondary" disabled>
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button id="downloadBtn" class="btn btn-outline-success" disabled>
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <button id="newUploadBtn" class="btn btn-outline-primary w-100 mt-2" style="display: none;">
+                            <i class="fas fa-upload me-1"></i>Upload New File
+                        </button>
                     </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ascii-preview-container">
+                        <h3><i class="fas fa-eye me-2"></i>ASCII Preview</h3>
+                        <div id="asciiPreview" class="ascii-preview">
+                            Upload a file to see the magic!
+                            <i class="fas fa-crop-alt crop-icon" id="cropIcon"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -290,37 +547,43 @@
         <button id="closeFullscreen" class="btn btn-danger position-absolute top-0 end-0 m-3">
             <i class="fas fa-times"></i>
         </button>
-        <div id="fullscreenAscii" class="ascii-preview"></div>
+        <div class="fullscreen-side-by-side">
+            <div class="fullscreen-original">
+                <video id="fullscreenOriginalVideo" controls style="display: none;"></video>
+                <img id="fullscreenOriginalImage" style="display: none;">
+            </div>
+            <div class="fullscreen-ascii" id="fullscreenAscii"></div>
+        </div>
     </div>
 
     <!-- GitHub Integration Modal -->
     <div class="modal fade" id="githubModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark-2 border-purple">
-                <div class="modal-header border-purple">
+            <div class="modal-content bg-dark-2 border-purple" style="background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border);">
+                <div class="modal-header border-0">
                     <h5 class="modal-title">Connect GitHub</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">GitHub Username</label>
-                        <input type="text" class="form-control bg-dark-3 border-purple" id="githubUsername">
+                        <input type="text" class="form-control" id="githubUsername" style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: #ffffff;">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Personal Access Token</label>
-                        <input type="password" class="form-control bg-dark-3 border-purple" id="githubToken">
-                        <small class="text-muted">Create token with repo permissions</small>
+                        <input type="password" class="form-control" id="githubToken" style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: #ffffff;">
+                        <small class="text-muted">Create a token with repo permissions at <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings</a></small>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Default Repository</label>
-                        <select class="form-select bg-dark-3 border-purple" id="githubRepo">
+                        <select class="form-select" id="githubRepo" style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: #ffffff;">
                             <option value="">Select repository</option>
                         </select>
                     </div>
                 </div>
-                <div class="modal-footer border-purple">
+                <div class="modal-footer border-0">
                     <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-purple-gradient" id="connectGithub">Connect</button>
+                    <button type="button" class="btn btn-convert" id="connectGithub">Connect</button>
                 </div>
             </div>
         </div>
@@ -332,10 +595,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@octokit/core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@octokit/core@5.0.0/dist-web/octokit.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // DOM elements
             const githubModal = new bootstrap.Modal(document.getElementById('githubModal'));
             const connectGithubBtn = document.getElementById('connectGithub');
             const dropzone = document.getElementById('dropzone');
@@ -344,88 +606,258 @@
             const originalVideo = document.getElementById('originalVideo');
             const originalImage = document.getElementById('originalImage');
             const asciiPreview = document.getElementById('asciiPreview');
+            const asciiPreviewContainer = document.querySelector('.ascii-preview-container');
             const fullscreenModal = document.getElementById('fullscreenModal');
             const fullscreenAscii = document.getElementById('fullscreenAscii');
             const fullscreenBtn = document.getElementById('fullscreenBtn');
             const closeFullscreen = document.getElementById('closeFullscreen');
             const downloadBtn = document.getElementById('downloadBtn');
             const convertBtn = document.getElementById('convertBtn');
+            const newUploadBtn = document.getElementById('newUploadBtn');
             const uploadForm = document.getElementById('uploadForm');
             const fontSize = document.getElementById('fontSize');
             const colorMode = document.getElementById('colorMode');
             const densityRange = document.getElementById('densityRange');
             const aspectRatio = document.getElementById('aspectRatio');
+            const customSymbols = document.getElementById('customSymbols');
+            const brightness = document.getElementById('brightness');
+            const contrast = document.getElementById('contrast');
+            const ambience = document.getElementById('ambience');
+            const clarity = document.getElementById('clarity');
+            const resolution = document.getElementById('resolution');
+            const keepAudio = document.getElementById('keepAudio');
+            const audioInput = document.getElementById('audioInput');
+            const volumeRange = document.getElementById('volumeRange');
+            const audioPreview = document.getElementById('audioPreview');
+            const trimRange = document.getElementById('trimRange');
+            const trimStart = document.getElementById('trimStart');
+            const trimEnd = document.getElementById('trimEnd');
             const notification = document.getElementById('notification');
             const notificationMessage = document.getElementById('notificationMessage');
-            
+            const fullscreenOriginalVideo = document.getElementById('fullscreenOriginalVideo');
+            const fullscreenOriginalImage = document.getElementById('fullscreenOriginalImage');
+            const cropIcon = document.getElementById('cropIcon');
+            const cropBox = document.getElementById('cropBox');
+
             let isVideo = false;
             let previewInterval = null;
             let currentFile = null;
             let downloadUrl = null;
-            
+            let audioDuration = 0;
+            let trimStartValue = 0;
+            let trimEndValue = 100;
+            let audioSrc = null;
+            let cropData = { x: 0, y: 0, width: 0, height: 0 };
+            let isCropping = false;
+            let isDragging = false;
+            let isResizing = false;
+            let resizeHandle = null;
+            let startX, startY;
+            let mediaHeight;
+            let mediaWidth;
+
             // GitHub integration
             connectGithubBtn.addEventListener('click', async function() {
-                const username = document.getElementById('githubUsername').value;
-                const token = document.getElementById('githubToken').value;
-                if (username && token) {
-                    try {
-                        const octokit = new Octokit.Octokit({ auth: token });
-                        const { data } = await octokit.request('GET /user/repos');
-                        const repoSelect = document.getElementById('githubRepo');
-                        repoSelect.innerHTML = '<option value="">Select repository</option>';
-                        data.forEach(repo => {
-                            const option = document.createElement('option');
-                            option.value = repo.full_name;
-                            option.textContent = repo.name;
-                            repoSelect.appendChild(option);
-                        });
-                        localStorage.setItem('githubCredentials', JSON.stringify({ username, token }));
-                        showNotification('GitHub connected successfully!', 'success');
-                        githubModal.hide();
-                    } catch (error) {
-                        showNotification('Error connecting to GitHub: ' + error.message, 'danger');
-                    }
-                } else {
+                const username = document.getElementById('githubUsername').value.trim();
+                const token = document.getElementById('githubToken').value.trim();
+                const repoSelect = document.getElementById('githubRepo');
+
+                if (!username || !token) {
                     showNotification('Please enter both username and token', 'danger');
+                    return;
+                }
+
+                try {
+                    const octokit = new Octokit({ auth: token });
+                    const { data } = await octokit.request('GET /user/repos', {
+                        visibility: 'all',
+                        affiliation: 'owner,collaborator',
+                        per_page: 100
+                    });
+
+                    repoSelect.innerHTML = '<option value="">Select repository</option>';
+                    data.forEach(repo => {
+                        const option = document.createElement('option');
+                        option.value = repo.full_name;
+                        option.textContent = repo.name;
+                        repoSelect.appendChild(option);
+                    });
+
+                    localStorage.setItem('githubCredentials', JSON.stringify({ username, token }));
+                    showNotification('GitHub connected successfully! Select a repository.', 'success');
+                    githubModal.hide();
+                } catch (error) {
+                    console.error('GitHub connection error:', error);
+                    showNotification(`Error connecting to GitHub: ${error.message}`, 'danger');
                 }
             });
-            
+
+            // Crop functionality
+            cropIcon.addEventListener('click', () => {
+                if (!currentFile) {
+                    showNotification('Upload a file first', 'danger');
+                    return;
+                }
+                isCropping = !isCropping;
+                cropBox.style.display = isCropping ? 'block' : 'none';
+                if (isCropping) {
+                    const previewRect = uploadPreview.getBoundingClientRect();
+                    cropData = {
+                        x: previewRect.width * 0.2,
+                        y: previewRect.height * 0.2,
+                        width: previewRect.width * 0.6,
+                        height: previewRect.height * 0.6
+                    };
+                    updateCropBox();
+                }
+            });
+
+            function updateCropBox() {
+                cropBox.style.left = `${cropData.x}px`;
+                cropBox.style.top = `${cropData.y}px`;
+                cropBox.style.width = `${cropData.width}px`;
+                cropBox.style.height = `${cropData.height}px`;
+                if (currentFile) {
+                    if (isVideo) {
+                        updateVideoAsciiPreview();
+                    } else {
+                        generateImageAsciiPreview(currentFile);
+                    }
+                }
+            }
+
+            cropBox.addEventListener('mousedown', (e) => {
+                if (!isCropping) return;
+                e.preventDefault();
+                const rect = cropBox.getBoundingClientRect();
+                const handles = document.querySelectorAll('.resize-handle');
+                let isHandle = false;
+                handles.forEach(handle => {
+                    const handleRect = handle.getBoundingClientRect();
+                    if (e.clientX >= handleRect.left && e.clientX <= handleRect.right &&
+                        e.clientY >= handleRect.top && e.clientY <= handleRect.bottom) {
+                        isResizing = true;
+                        resizeHandle = handle;
+                        isHandle = true;
+                    }
+                });
+                if (!isHandle) {
+                    isDragging = true;
+                }
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isCropping) return;
+                if (isDragging) {
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+                    const previewRect = uploadPreview.getBoundingClientRect();
+                    cropData.x = Math.max(0, Math.min(cropData.x + dx, previewRect.width - cropData.width));
+                    cropData.y = Math.max(0, Math.min(cropData.y + dy, previewRect.height - cropData.height));
+                    updateCropBox();
+                    startX = e.clientX;
+                    startY = e.clientY;
+                } else if (isResizing) {
+                    const previewRect = uploadPreview.getBoundingClientRect();
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+                    if (resizeHandle.style.left === '-5px' && resizeHandle.style.top === '-5px') {
+                        cropData.x = Math.max(0, cropData.x + dx);
+                        cropData.y = Math.max(0, cropData.y + dy);
+                        cropData.width = Math.min(cropData.width - dx, cropData.x + cropData.width);
+                        cropData.height = Math.min(cropData.height - dy, cropData.y + cropData.height);
+                    } else if (resizeHandle.style.right === '-5px' && resizeHandle.style.top === '-5px') {
+                        cropData.y = Math.max(0, cropData.y + dy);
+                        cropData.width = Math.min(cropData.width + dx, previewRect.width - cropData.x);
+                        cropData.height = Math.min(cropData.height - dy, cropData.y + cropData.height);
+                    } else if (resizeHandle.style.left === '-5px' && resizeHandle.style.bottom === '-5px') {
+                        cropData.x = Math.max(0, cropData.x + dx);
+                        cropData.width = Math.min(cropData.width - dx, cropData.x + cropData.width);
+                        cropData.height = Math.min(cropData.height + dy, previewRect.height - cropData.y);
+                    } else if (resizeHandle.style.right === '-5px' && resizeHandle.style.bottom === '-5px') {
+                        cropData.width = Math.min(cropData.width + dx, previewRect.width - cropData.x);
+                        cropData.height = Math.min(cropData.height + dy, previewRect.height - cropData.y);
+                    }
+                    cropData.width = Math.max(10, cropData.width);
+                    cropData.height = Math.max(10, cropData.height);
+                    updateCropBox();
+                    startX = e.clientX;
+                    startY = e.clientY;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                isResizing = false;
+                resizeHandle = null;
+            });
+
+            // Upload validation
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    const file = fileInput.files[0];
+                    const fileType = file.type.split('/')[0];
+                    if (fileType === 'video') {
+                        const video = document.createElement('video');
+                        video.src = URL.createObjectURL(file);
+                        video.addEventListener('loadedmetadata', () => {
+                            if (file.size > 80 * 1024 * 1024) {
+                                showNotification('File size exceeds 80MB limit', 'danger');
+                                convertBtn.disabled = true;
+                            } else if (video.duration > 60) {
+                                showNotification('Video duration exceeds 1 minute limit', 'danger');
+                                convertBtn.disabled = true;
+                            } else {
+                                handleFileUpload(file);
+                            }
+                            URL.revokeObjectURL(video.src);
+                        });
+                    } else {
+                        if (file.size > 80 * 1024 * 1024) {
+                            showNotification('File size exceeds 80MB limit', 'danger');
+                            convertBtn.disabled = true;
+                        } else {
+                            handleFileUpload(file);
+                        }
+                    }
+                }
+            });
+
             // Upload handling
             dropzone.addEventListener('click', () => fileInput.click());
             dropzone.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                dropzone.style.borderColor = '#aaa';
-                dropzone.style.background = '#222';
+                dropzone.style.borderColor = 'var(--purple-light)';
+                dropzone.style.background = 'rgba(142, 36, 170, 0.1)';
             });
             dropzone.addEventListener('dragleave', () => {
-                dropzone.style.borderColor = '#666';
-                dropzone.style.background = 'transparent';
+                dropzone.style.borderColor = 'var(--glass-border)';
+                dropzone.style.background = 'var(--glass-bg)';
             });
             dropzone.addEventListener('drop', (e) => {
                 e.preventDefault();
-                dropzone.style.borderColor = '#666';
-                dropzone.style.background = 'transparent';
+                dropzone.style.borderColor = 'var(--glass-border)';
+                dropzone.style.background = 'var(--glass-bg)';
                 if (e.dataTransfer.files.length) {
                     fileInput.files = e.dataTransfer.files;
-                    handleFileUpload(e.dataTransfer.files[0]);
+                    fileInput.dispatchEvent(new Event('change'));
                 }
             });
-            
-            fileInput.addEventListener('change', () => {
-                if (fileInput.files.length) {
-                    handleFileUpload(fileInput.files[0]);
-                }
-            });
-            
+
             function handleFileUpload(file) {
                 currentFile = file;
                 const fileType = file.type.split('/')[0];
                 isVideo = fileType === 'video';
                 dropzone.style.display = 'none';
                 uploadPreview.style.display = 'block';
-                stopVideoPreview(); // Clear any existing preview
-                downloadBtn.disabled = true; // Reset download button
-                downloadUrl = null; // Clear previous download
+                stopVideoPreview();
+                downloadBtn.disabled = true;
+                downloadUrl = null;
+                cropBox.style.display = 'none';
+                isCropping = false;
+                cropData = { x: 0, y: 0, width: 0, height: 0 };
                 asciiPreview.innerHTML = 'Processing preview...';
                 
                 if (isVideo) {
@@ -433,9 +865,16 @@
                     originalImage.style.display = 'none';
                     originalVideo.src = URL.createObjectURL(file);
                     originalVideo.addEventListener('loadedmetadata', () => {
-                        originalVideo.currentTime = 0; // Reset to start
-                        updateVideoAsciiPreview(); // Show initial frame
-                    });
+                        originalVideo.currentTime = 0;
+                        setTimeout(() => {
+                            mediaWidth = uploadPreview.offsetWidth;
+                            mediaHeight = originalVideo.offsetHeight;
+                            asciiPreviewContainer.style.width = `${mediaWidth}px`;
+                            asciiPreview.style.width = `${mediaWidth}px`;
+                            asciiPreview.style.height = `${mediaHeight}px`;
+                            updateVideoAsciiPreview();
+                        }, 100);
+                    }, { once: true });
                     originalVideo.addEventListener('play', startVideoPreview);
                     originalVideo.addEventListener('pause', stopVideoPreview);
                     originalVideo.addEventListener('seeked', updateVideoAsciiPreview);
@@ -443,33 +882,180 @@
                     originalImage.style.display = 'block';
                     originalVideo.style.display = 'none';
                     originalImage.src = URL.createObjectURL(file);
-                    generateImageAsciiPreview(file);
+                    originalImage.onload = () => {
+                        mediaWidth = uploadPreview.offsetWidth;
+                        mediaHeight = originalImage.offsetHeight;
+                        asciiPreviewContainer.style.width = `${mediaWidth}px`;
+                        asciiPreview.style.width = `${mediaWidth}px`;
+                        asciiPreview.style.height = `${mediaHeight}px`;
+                        generateImageAsciiPreview(file);
+                    };
                 }
                 
                 convertBtn.disabled = false;
                 fullscreenBtn.disabled = true;
+                newUploadBtn.style.display = 'block';
             }
-            
-            function generateAsciiFromImage(img, width, height, aspectScale, mode) {
+
+            newUploadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                dropzone.style.display = 'block';
+                uploadPreview.style.display = 'none';
+                originalVideo.style.display = 'none';
+                originalImage.style.display = 'none';
+                asciiPreview.innerHTML = 'Upload a file to see the magic!<i class="fas fa-crop-alt crop-icon" id="cropIcon"></i>';
+                asciiPreviewContainer.style.width = '';
+                asciiPreview.style.width = '';
+                asciiPreview.style.height = '';
+                stopVideoPreview();
+                currentFile = null;
+                downloadBtn.disabled = true;
+                downloadUrl = null;
+                convertBtn.disabled = true;
+                newUploadBtn.style.display = 'none';
+                trimRange.style.display = 'none';
+                trimStart.textContent = '0:00';
+                trimEnd.textContent = '0:00';
+                audioPreview.style.display = 'none';
+                audioSrc = null;
+                trimStartValue = 0;
+                trimEndValue = 100;
+                cropBox.style.display = 'none';
+                isCropping = false;
+                cropData = { x: 0, y: 0, width: 0, height: 0 };
+                if (originalVideo.src) URL.revokeObjectURL(originalVideo.src);
+                if (originalImage.src) URL.revokeObjectURL(originalImage.src);
+            });
+
+            audioInput.addEventListener('change', () => {
+                if (audioInput.files.length) {
+                    audioSrc = URL.createObjectURL(audioInput.files[0]);
+                    audioPreview.src = audioSrc;
+                    audioPreview.style.display = 'block';
+                    trimRange.style.display = 'block';
+                    audioPreview.addEventListener('loadedmetadata', () => {
+                        audioDuration = audioPreview.duration;
+                        trimStart.textContent = formatTime(0);
+                        trimEnd.textContent = formatTime(audioDuration);
+                    });
+                }
+            });
+
+            trimRange.addEventListener('input', (e) => {
+                trimStartValue = e.target.value;
+                trimStart.textContent = formatTime((trimStartValue / 100) * audioDuration);
+                trimEnd.textContent = formatTime(audioDuration);
+            });
+
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            function adjustImageCanvas(ctx, width, height, brightness, contrast, ambience, clarity) {
+                let imageData = ctx.getImageData(0, 0, width, height);
+                let data = imageData.data;
+
+                // Brightness and contrast
+                for (let i = 0; i < data.length; i += 4) {
+                    for (let c = 0; c < 3; c++) {
+                        data[i + c] = Math.min(255, Math.max(0, data[i + c] * contrast + brightness * 255));
+                    }
+                }
+
+                // Ambience
+                if (ambience > 0) {
+                    for (let i = 0; i < data.length; i += 4) {
+                        for (let c = 0; c < 3; c++) {
+                            data[i + c] = data[i + c] * (1 - ambience) + 50 * ambience;
+                        }
+                    }
+                }
+
+                ctx.putImageData(imageData, 0, 0);
+
+                // Clarity
+                if (clarity > 0) {
+                    let tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = width;
+                    tempCanvas.height = height;
+                    let tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.drawImage(ctx.canvas, 0, 0);
+                    tempCtx.filter = `blur(2px)`;
+                    tempCtx.drawImage(ctx.canvas, 0, 0);
+                    let blurredData = tempCtx.getImageData(0, 0, width, height).data;
+                    imageData = ctx.getImageData(0, 0, width, height);
+                    data = imageData.data;
+                    for (let i = 0; i < data.length; i += 4) {
+                        for (let c = 0; c < 3; c++) {
+                            data[i + c] = Math.min(255, Math.max(0, data[i + c] + clarity * (data[i + c] - blurredData[i + c])));
+                        }
+                    }
+                    ctx.putImageData(imageData, 0, 0);
+                }
+            }
+
+            function generateAsciiFromImage(img, width, height, aspectScale, mode, ramp, brightness, contrast, ambience, clarity) {
                 const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = Math.floor(height * aspectScale);
+                const previewRect = uploadPreview.getBoundingClientRect();
+                const mediaWidth = isVideo ? originalVideo.videoWidth : img.width;
+                const mediaHeight = isVideo ? originalVideo.videoHeight : img.height;
+                const scaleX = mediaWidth / previewRect.width;
+                const scaleY = mediaHeight / previewRect.height;
+                const cropX = isCropping ? Math.floor(cropData.x * scaleX) : 0;
+                const cropY = isCropping ? Math.floor(cropData.y * scaleY) : 0;
+                const cropWidth = isCropping ? Math.floor(cropData.width * scaleX) : mediaWidth;
+                const cropHeight = isCropping ? Math.floor(cropData.height * scaleY) : mediaHeight;
+                
+                canvas.width = cropWidth || width;
+                canvas.height = cropHeight || Math.floor(height * aspectScale);
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, canvas.height);
-                const data = ctx.getImageData(0, 0, width, canvas.height).data;
-                const ramp = ' .:-=+*#%@';
+                ctx.drawImage(img, cropX, cropY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
+
+                adjustImageCanvas(ctx, canvas.width, canvas.height, brightness, contrast, ambience, clarity);
+
+                const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
                 let ascii = '';
                 const colorSpan = mode === 'color';
-                for (let y = 0; y < canvas.height; y++) {
-                    for (let x = 0; x < width; x++) {
-                        const i = (y * width + x) * 4;
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
+                const matrixModes = {
+                    'matrix': [0, 255, 0],
+                    'matrix_red': [255, 0, 0],
+                    'matrix_violet': [128, 0, 128],
+                    'matrix_blue': [0, 0, 255],
+                    'matrix_cyan': [0, 255, 255],
+                    'matrix_heliotrope': [223, 115, 255]
+                };
+                const isMatrix = mode in matrixModes;
+
+                // Calculate target dimensions to fit #asciiPreview's black box
+                const fontSizePx = parseFloat(fontSize.value);
+                const charWidth = fontSizePx * 0.6; // Approximate character width (monospace)
+                const previewStyles = getComputedStyle(asciiPreview);
+                const paddingX = parseFloat(previewStyles.paddingLeft) + parseFloat(previewStyles.paddingRight);
+                const paddingY = parseFloat(previewStyles.paddingTop) + parseFloat(previewStyles.paddingBottom);
+                const availableWidth = asciiPreview.clientWidth - paddingX;
+                const availableHeight = asciiPreview.clientHeight - paddingY;
+                const cols = Math.floor(availableWidth / charWidth);
+                const lines = Math.floor(availableHeight / fontSizePx);
+                const adjustedWidth = cols > 0 ? cols : width;
+                const adjustedHeight = lines > 0 ? lines : height;
+
+                for (let y = 0; y < adjustedHeight; y++) {
+                    for (let x = 0; x < adjustedWidth; x++) {
+                        const srcX = Math.floor(x * (canvas.width / adjustedWidth));
+                        const srcY = Math.floor(y * (canvas.height / adjustedHeight));
+                        const i = (srcY * canvas.width + srcX) * 4;
+                        let r = data[i];
+                        let g = data[i + 1];
+                        let b = data[i + 2];
                         const avg = (r + g + b) / 3 / 255;
                         const index = Math.floor((1 - avg) * (ramp.length - 1));
                         const char = ramp[index];
-                        if (colorSpan) {
+                        if (isMatrix) {
+                            const [mr, mg, mb] = matrixModes[mode];
+                            ascii += `<span style="color: rgb(${mr},${mg},${mb})">${char}</span>`;
+                        } else if (colorSpan) {
                             ascii += `<span style="color: rgb(${r},${g},${b})">${char}</span>`;
                         } else {
                             ascii += char;
@@ -477,9 +1063,13 @@
                     }
                     ascii += '\n';
                 }
+                asciiPreview.classList.toggle('monochrome', mode === 'monochrome');
+                asciiPreview.classList.toggle('grayscale', mode === 'grayscale');
+                fullscreenAscii.classList.toggle('monochrome', mode === 'monochrome');
+                fullscreenAscii.classList.toggle('grayscale', mode === 'grayscale');
                 return ascii;
             }
-            
+
             function generateImageAsciiPreview(file) {
                 const img = new Image();
                 img.src = URL.createObjectURL(file);
@@ -488,57 +1078,79 @@
                     const height = Math.floor(img.height / img.width * width);
                     const aspectScale = parseFloat(aspectRatio.value);
                     const mode = colorMode.value;
-                    const ascii = generateAsciiFromImage(img, width, height, aspectScale, mode);
-                    asciiPreview.innerHTML = ascii;
+                    const ramp = customSymbols.value || " .';-+[*%";
+                    const bright = parseFloat(brightness.value);
+                    const cont = parseFloat(contrast.value);
+                    const amb = parseFloat(ambience.value);
+                    const clar = parseFloat(clarity.value);
+                    const ascii = generateAsciiFromImage(img, width, height, aspectScale, mode, ramp, bright, cont, amb, clar);
+                    asciiPreview.innerHTML = ascii + '<i class="fas fa-crop-alt crop-icon" id="cropIcon"></i>';
                     asciiPreview.style.fontSize = `${fontSize.value}px`;
                     fullscreenBtn.disabled = false;
                 };
             }
-            
+
             function updateVideoAsciiPreview() {
                 if (!isVideo || !originalVideo.src) return;
                 const width = densityRange.value * 20;
                 const height = Math.floor(originalVideo.videoHeight / originalVideo.videoWidth * width);
                 const aspectScale = parseFloat(aspectRatio.value);
                 const mode = colorMode.value;
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = Math.floor(height * aspectScale);
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(originalVideo, 0, 0, width, canvas.height);
-                const ascii = generateAsciiFromImage(originalVideo, width, height, aspectScale, mode);
-                asciiPreview.innerHTML = ascii;
+                const ramp = customSymbols.value || " .';-+[*%";
+                const bright = parseFloat(brightness.value);
+                const cont = parseFloat(contrast.value);
+                const amb = parseFloat(ambience.value);
+                const clar = parseFloat(clarity.value);
+                const ascii = generateAsciiFromImage(originalVideo, width, height, aspectScale, mode, ramp, bright, cont, amb, clar);
+                asciiPreview.innerHTML = ascii + '<i class="fas fa-crop-alt crop-icon" id="cropIcon"></i>';
                 asciiPreview.style.fontSize = `${fontSize.value}px`;
                 fullscreenBtn.disabled = false;
             }
-            
+
             function startVideoPreview() {
                 stopVideoPreview();
-                const width = densityRange.value * 20;
-                const height = Math.floor(originalVideo.videoHeight / originalVideo.videoWidth * width);
-                const aspectScale = parseFloat(aspectRatio.value);
-                const mode = colorMode.value;
                 previewInterval = setInterval(() => {
                     updateVideoAsciiPreview();
-                }, 1000 / 30); // 30 fps
+                }, 1000 / 30);
             }
-            
+
             function stopVideoPreview() {
                 if (previewInterval) {
                     clearInterval(previewInterval);
                     previewInterval = null;
                 }
             }
-            
+
             uploadForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                if (convertBtn.disabled) return; // Prevent multiple submissions
+                if (convertBtn.disabled) return;
                 convertBtn.disabled = true;
                 convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Converting...';
                 showNotification('Conversion started...');
-                
+
                 const formData = new FormData(uploadForm);
                 formData.append('aspectRatio', aspectRatio.value);
+                formData.append('customSymbols', customSymbols.value);
+                formData.append('brightness', brightness.value);
+                formData.append('contrast', contrast.value);
+                formData.append('ambience', ambience.value);
+                formData.append('clarity', clarity.value);
+                formData.append('resolution', resolution.value);
+                if (isCropping) {
+                    const previewRect = uploadPreview.getBoundingClientRect();
+                    const mediaWidth = isVideo ? originalVideo.videoWidth : originalImage.naturalWidth;
+                    const mediaHeight = isVideo ? originalVideo.videoHeight : originalImage.naturalHeight;
+                    const scaleX = mediaWidth / previewRect.width;
+                    const scaleY = mediaHeight / previewRect.height;
+                    formData.append('cropX', Math.floor(cropData.x * scaleX));
+                    formData.append('cropY', Math.floor(cropData.y * scaleY));
+                    formData.append('cropWidth', Math.floor(cropData.width * scaleX));
+                    formData.append('cropHeight', Math.floor(cropData.height * scaleY));
+                }
+                if (trimRange.style.display === 'block') {
+                    formData.append('startTime', (trimStartValue / 100) * audioDuration);
+                    formData.append('endTime', audioDuration);
+                }
                 try {
                     const response = await fetch('/upload', {
                         method: 'POST',
@@ -559,7 +1171,7 @@
                     convertBtn.innerHTML = '<i class="fas fa-magic me-1"></i>Convert to ASCII';
                 }
             });
-            
+
             downloadBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (downloadUrl) {
@@ -570,17 +1182,27 @@
                     showNotification('Download started!', 'success');
                 }
             });
-            
+
             fullscreenBtn.addEventListener('click', () => {
+                fullscreenOriginalVideo.style.display = 'none';
+                fullscreenOriginalImage.style.display = 'none';
+                if (isVideo) {
+                    fullscreenOriginalVideo.src = originalVideo.src;
+                    fullscreenOriginalVideo.style.display = 'block';
+                } else {
+                    fullscreenOriginalImage.src = originalImage.src;
+                    fullscreenOriginalImage.style.display = 'block';
+                }
                 fullscreenAscii.innerHTML = asciiPreview.innerHTML;
                 fullscreenModal.style.display = 'flex';
                 fullscreenAscii.style.fontSize = `${fontSize.value}px`;
             });
-            
+
             closeFullscreen.addEventListener('click', () => {
                 fullscreenModal.style.display = 'none';
+                fullscreenOriginalVideo.pause();
             });
-            
+
             function showNotification(message, type = 'info') {
                 notification.classList.remove('alert-info', 'alert-success', 'alert-danger');
                 notification.classList.add(`alert-${type}`);
@@ -590,14 +1212,25 @@
                     notification.style.display = 'none';
                 }, 5000);
             }
-            
-            // Update preview on parameter change
-            [densityRange, colorMode, fontSize, aspectRatio].forEach(element => {
+
+            [densityRange, colorMode, fontSize, aspectRatio, customSymbols, brightness, contrast, ambience, clarity, resolution, volumeRange].forEach(element => {
                 element.addEventListener('input', () => {
                     if (currentFile) {
                         if (isVideo) {
-                            updateVideoAsciiPreview();
+                            setTimeout(() => {
+                                mediaWidth = uploadPreview.offsetWidth;
+                                mediaHeight = originalVideo.offsetHeight;
+                                asciiPreviewContainer.style.width = `${mediaWidth}px`;
+                                asciiPreview.style.width = `${mediaWidth}px`;
+                                asciiPreview.style.height = `${mediaHeight}px`;
+                                updateVideoAsciiPreview();
+                            }, 100);
                         } else {
+                            mediaWidth = uploadPreview.offsetWidth;
+                            mediaHeight = originalImage.offsetHeight;
+                            asciiPreviewContainer.style.width = `${mediaWidth}px`;
+                            asciiPreview.style.width = `${mediaWidth}px`;
+                            asciiPreview.style.height = `${mediaHeight}px`;
                             generateImageAsciiPreview(currentFile);
                         }
                     }
