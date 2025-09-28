@@ -34,7 +34,7 @@ def adjust_image(frame, brightness=0, contrast=1.0, ambience=0, clarity=0):
     if ambience != 0:
         amb_color = np.full_like(adjusted, (50, 50, 50))
         adjusted = cv2.addWeighted(adjusted, 1 - ambience, amb_color, ambience, 0)
-    
+        
     return adjusted
 
 def convert_frame_to_ascii(frame, width=80, color_mode='grayscale', aspect_scale=0.5, custom_symbols=" .';-+[*%", brightness=0, contrast=1.0, ambience=0, clarity=0, crop_x=0, crop_y=0, crop_width=None, crop_height=None):
